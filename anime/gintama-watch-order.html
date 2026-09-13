@@ -1,0 +1,614 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gintama Watch Order</title>
+<style>
+  :root{
+    --bg:#eee6d3;
+    --surface:#f9f4e7;
+    --surface-2:#e6dcc2;
+    --ink:#231c14;
+    --ink-soft:#5c5140;
+    --ink-faint:#8a7d67;
+    --line:#cfc2a0;
+    --accent:#a23a2c;
+    --accent-ink:#ffffff;
+    --soul:#3f5c68;
+    --canon:#3c6a50;
+    --canon-bg:#dfe8dd;
+    --bonus:#93641b;
+    --bonus-bg:#efe2c4;
+    --gag:#6f6555;
+    --gag-bg:#e6ddc9;
+    --shadow:0 1px 0 rgba(35,28,20,.06),0 8px 24px -12px rgba(35,28,20,.35);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#12141c;
+      --surface:#191c27;
+      --surface-2:#232736;
+      --ink:#ece6d6;
+      --ink-soft:#b3ab98;
+      --ink-faint:#7c7666;
+      --line:#333a4c;
+      --accent:#e1685a;
+      --accent-ink:#1a1210;
+      --soul:#8fb2c2;
+      --canon:#7bb494;
+      --canon-bg:#1c2b23;
+      --bonus:#dcb256;
+      --bonus-bg:#2c2515;
+      --gag:#a39c8a;
+      --gag-bg:#242336;
+      --shadow:0 1px 0 rgba(0,0,0,.4),0 12px 30px -14px rgba(0,0,0,.7);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12141c;
+    --surface:#191c27;
+    --surface-2:#232736;
+    --ink:#ece6d6;
+    --ink-soft:#b3ab98;
+    --ink-faint:#7c7666;
+    --line:#333a4c;
+    --accent:#e1685a;
+    --accent-ink:#1a1210;
+    --soul:#8fb2c2;
+    --canon:#7bb494;
+    --canon-bg:#1c2b23;
+    --bonus:#dcb256;
+    --bonus-bg:#2c2515;
+    --gag:#a39c8a;
+    --gag-bg:#242336;
+    --shadow:0 1px 0 rgba(0,0,0,.4),0 12px 30px -14px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;font-size:18px;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Zen Kaku Gothic New",-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;
+    padding-inline:24px;
+    line-height:1.6;
+    font-size:1rem;
+  }
+  a{color:var(--accent);}
+  .wrap{max-width:920px;margin:0 auto;padding-block:36px 96px;}
+
+  h1,h2,h3{text-wrap:balance;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding-block:18px 30px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:34px;
+  }
+  .hero-top{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .kanji{
+    font-family:"Hina Mincho",serif;
+    font-size:clamp(52px,12vw,84px);
+    line-height:1;
+    color:var(--accent);
+    position:relative;
+  }
+  .wordmark{
+    font-family:"Hina Mincho",serif;
+    font-size:clamp(38px,8.6vw,60px);
+    letter-spacing:.05em;
+    line-height:1;
+  }
+  .wordmark small{
+    display:block;
+    font-family:"Zen Kaku Gothic New",sans-serif;
+    font-size:.8rem;
+    letter-spacing:.14em;
+    color:var(--ink-faint);
+    font-weight:500;
+    margin-top:8px;
+    text-transform:uppercase;
+  }
+  .slash{
+    width:100%;height:14px;margin-block:24px 20px;
+    overflow:visible;
+  }
+  .slash path{stroke:var(--soul);stroke-width:1.4;fill:none;opacity:.55;}
+
+  .hero-sub{
+    color:var(--ink-soft);
+    font-size:1.15rem;
+    max-width:58ch;
+  }
+  .stat-row{
+    display:flex;gap:28px;flex-wrap:wrap;margin-top:24px;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat{display:flex;flex-direction:column;gap:3px;}
+  .stat b{font-size:1.7rem;font-weight:700;}
+  .stat span{font-size:.8rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em;}
+
+  /* ---------- Legend ---------- */
+  .legend{
+    display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;
+  }
+  .legend .pill{cursor:default;}
+
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:.85rem;font-weight:700;letter-spacing:.02em;
+    padding:7px 13px 7px 10px;border-radius:99px;
+    white-space:nowrap;
+  }
+  .pill .dot{width:8px;height:8px;border-radius:99px;flex:none;}
+  .pill.canon{background:var(--canon-bg);color:var(--canon);}
+  .pill.canon .dot{background:var(--canon);}
+  .pill.bonus{background:var(--bonus-bg);color:var(--bonus);}
+  .pill.bonus .dot{background:var(--bonus);}
+  .pill.gag{background:var(--gag-bg);color:var(--gag);}
+  .pill.gag .dot{background:var(--gag);}
+
+  /* ---------- About toggle ---------- */
+  .about{
+    margin-top:28px;border:1px solid var(--line);border-radius:12px;background:var(--surface);
+  }
+  .about > summary{
+    list-style:none;cursor:pointer;padding:16px 18px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    font-size:1.05rem;font-weight:700;color:var(--ink-soft);
+  }
+  .about > summary::-webkit-details-marker{display:none;}
+  .about > summary .chev{transition:transform .18s ease;color:var(--ink-faint);flex:none;}
+  .about[open] > summary .chev{transform:rotate(90deg);}
+  .about-body{padding:0 20px 20px;font-size:1.05rem;color:var(--ink-soft);}
+  .about-body p{margin:10px 0;}
+  .about-body b{color:var(--ink);}
+
+  /* ---------- Parts / timeline ---------- */
+  .part-head{
+    margin-top:64px;margin-bottom:26px;
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .part-head .num{
+    font-family:"Hina Mincho",serif;font-size:1.1rem;color:var(--soul);
+    border:1px solid var(--soul);border-radius:99px;
+    width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+    flex:none;
+  }
+  .part-head h2{
+    font-family:"Hina Mincho",serif;font-weight:400;font-size:1.75rem;margin:0;
+    letter-spacing:.02em;
+  }
+  .part-head .years{
+    color:var(--ink-faint);font-size:.9rem;font-weight:500;letter-spacing:.04em;
+    margin-left:auto;font-variant-numeric:tabular-nums;
+  }
+
+  .timeline{
+    position:relative;
+    border-left:1px solid var(--line);
+    margin-left:19px;
+  }
+
+  .entry{
+    position:relative;
+    padding:0 0 0 34px;
+    margin-bottom:18px;
+  }
+  .entry .marker{
+    position:absolute;left:-19.5px;top:16px;
+    width:39px;height:39px;border-radius:99px;
+    background:var(--surface);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-faint);
+  }
+  .entry .marker svg{width:19px;height:19px;}
+  .entry.status-canon .marker{border-color:var(--canon);color:var(--canon);}
+  .entry.status-bonus .marker{border-color:var(--bonus);color:var(--bonus);}
+  .entry.status-gag .marker{border-color:var(--gag);color:var(--gag);}
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .card-face{
+    padding:18px 20px 20px;
+    cursor:pointer;
+    display:block;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .card-face:focus-visible{outline:2px solid var(--soul);outline-offset:-2px;}
+
+  .row1{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  }
+  .face-inner{display:flex;gap:18px;align-items:stretch;}
+  .poster{
+    position:relative;flex:none;width:112px;min-height:152px;align-self:stretch;border-radius:9px;
+    overflow:hidden;background:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;color:var(--ink-faint);
+    border:1px solid var(--line);
+  }
+  .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+  .poster svg{width:32px;height:32px;position:relative;z-index:0;}
+  .face-main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;}
+  .titles{min-width:0;}
+  .no{
+    font-variant-numeric:tabular-nums;color:var(--ink-faint);font-size:.85rem;font-weight:700;
+    margin-right:7px;
+  }
+  .title-en{font-size:1.2rem;font-weight:700;letter-spacing:.005em;}
+  .title-sub{
+    font-size:.9rem;color:var(--ink-faint);margin-top:3px;
+    font-style:italic;
+  }
+  .chev-open{
+    flex:none;color:var(--ink-faint);margin-top:5px;
+    transition:transform .2s ease;
+    width:20px;height:20px;
+  }
+  .card.is-open .chev-open{transform:rotate(180deg);}
+
+  .badges{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;
+  }
+  .badge{
+    font-size:.8rem;font-weight:600;color:var(--ink-soft);
+    background:var(--surface-2);border-radius:7px;padding:5px 10px;
+    letter-spacing:.02em;font-variant-numeric:tabular-nums;
+  }
+  .teaser{
+    margin-top:12px;font-size:1rem;color:var(--ink-soft);
+  }
+
+  .detail{
+    max-height:0;opacity:0;overflow:hidden;
+    transition:max-height .28s ease, opacity .2s ease, padding .28s ease;
+    padding:0 20px;
+  }
+  .card.is-open .detail{
+    max-height:700px;opacity:1;padding:0 20px 20px;
+  }
+  .detail-in{border-top:1px solid var(--line);padding-top:15px;}
+  .detail p{margin:0 0 10px;font-size:1rem;color:var(--ink-soft);}
+  .detail p:last-child{margin-bottom:0;}
+  .note{
+    display:flex;gap:10px;margin-top:4px;
+    font-size:.92rem;color:var(--ink);
+    background:var(--surface-2);border-radius:9px;padding:11px 13px;
+  }
+  .note svg{flex:none;margin-top:2px;color:var(--soul);width:18px;height:18px;}
+
+  @media (hover:hover) and (pointer:fine){
+    .card-face:hover{background:var(--surface-2);}
+    .card:hover .detail{max-height:700px;opacity:1;padding:0 20px 20px;}
+    .card:hover .chev-open{transform:rotate(180deg);}
+  }
+
+  /* ---------- Divider between parts ---------- */
+  .brush{width:100%;height:14px;margin:36px 0 -8px;opacity:.5;}
+  .brush path{stroke:var(--ink-faint);stroke-width:1;fill:none;}
+
+  /* ---------- Footer sections ---------- */
+  .foot{margin-top:68px;padding-top:32px;border-top:1px solid var(--line);}
+  .foot h3{font-family:"Hina Mincho",serif;font-weight:400;font-size:1.5rem;margin:0 0 16px;}
+  details.fold{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:12px;}
+  details.fold > summary{
+    list-style:none;cursor:pointer;padding:15px 18px;font-weight:700;font-size:1.05rem;
+    display:flex;justify-content:space-between;align-items:center;color:var(--ink-soft);
+    gap:10px;
+  }
+  details.fold > summary::-webkit-details-marker{display:none;}
+  details.fold .chev{color:var(--ink-faint);transition:transform .18s ease;flex:none;}
+  details.fold[open] > summary .chev{transform:rotate(90deg);}
+  .fold-body{padding:0 18px 18px;font-size:1rem;color:var(--ink-soft);}
+  .fold-body p{margin:8px 0;}
+  .chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .chip{
+    font-size:.85rem;font-weight:600;background:var(--surface-2);color:var(--ink-soft);
+    border-radius:7px;padding:5px 10px;font-variant-numeric:tabular-nums;
+  }
+  .foot-note{font-size:.88rem;color:var(--ink-faint);margin-top:30px;}
+  .foot-note a{color:var(--ink-faint);text-decoration:underline;}
+
+  @media (max-width:600px){
+    body{padding-inline:18px;}
+    .wrap{padding-block:24px 72px;}
+    .stat-row{gap:18px 26px;}
+    .part-head{margin-top:46px;flex-wrap:wrap;row-gap:4px;}
+    .part-head h2{font-size:1.5rem;}
+    .card-face{padding:16px 16px 17px;}
+    .face-inner{flex-direction:column;gap:14px;}
+    .poster{width:100%;align-self:auto;min-height:0;aspect-ratio:225/320;max-height:300px;border-radius:10px;}
+    .poster svg{width:44px;height:44px;}
+  }
+</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-top">
+      <div class="kanji">&#37504;&#39746;</div>
+      <div class="wordmark">GINTAMA
+        <small>Complete Watch Order</small>
+      </div>
+    </div>
+    <svg class="slash" viewBox="0 0 400 10" preserveAspectRatio="none"><path d="M0,8 C120,-4 260,14 400,2"/></svg>
+    <p class="hero-sub">Every TV run, movie, OVA and one-off special, in the order that actually makes sense &#8212; corrected against the show's own release history rather than copied from the usual recycled lists. Tap any stop for the full story.</p>
+
+    <div class="stat-row">
+      <div class="stat"><b>20</b><span>Stops</span></div>
+      <div class="stat"><b>367</b><span>TV Episodes</span></div>
+      <div class="stat"><b>3</b><span>Movies</span></div>
+      <div class="stat"><b>2005&#8211;21</b><span>Span</span></div>
+    </div>
+
+    <div class="legend">
+      <span class="pill canon"><span class="dot"></span>Main story</span>
+      <span class="pill bonus"><span class="dot"></span>Bonus / optional</span>
+      <span class="pill gag"><span class="dot"></span>Gag short &#8212; skippable</span>
+    </div>
+
+    <details class="about">
+      <summary>Why this order differs from most guides you'll find online <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
+      <div class="about-body">
+        <p><b>The 2010 movie doesn't replace episodes 58&#8211;61.</b> A lot of lists have you skip the Benizakura Arc on TV and watch the movie in its place. Every detailed watch-order source has you watch the full TV run and treats the movie as an optional bonus retelling, watched afterward.</p>
+        <p><b>The "Futon ni Haitte kara" special doesn't split Gintama&#176; in half.</b> It's often placed 30 episodes into the fourth season. It was actually released as a tie-in right when that season premiered &#8212; it belongs right before it starts, not in the middle.</p>
+        <p><b>Porori-hen airs after Gintama., not before.</b> Some lists reorder these two for "chronology," but nothing in the show's official release or relation data supports watching Porori-hen first, so this stays in broadcast order.</p>
+      </div>
+    </details>
+  </header>
+
+  <div id="parts"></div>
+
+  <div class="foot">
+    <h3>Reference notes</h3>
+
+    <details class="fold">
+      <summary>Filler episodes you can skip (cross-checked list) <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
+      <div class="fold-body">
+        <p>Cross-checked against the episode-by-episode filler trackers fan sites keep for exactly this purpose. These are the anime-original episodes inside the numbered TV run above &#8212; skipping them costs you nothing plot-wise:</p>
+        <div class="chip-list">
+          <span class="chip">1&#8211;2</span><span class="chip">50</span><span class="chip">57</span><span class="chip">75</span><span class="chip">106</span><span class="chip">114</span><span class="chip">124&#8211;125</span><span class="chip">135</span><span class="chip">137</span><span class="chip">150</span><span class="chip">155</span><span class="chip">164</span><span class="chip">166</span><span class="chip">171</span><span class="chip">173&#8211;174</span><span class="chip">176</span><span class="chip">185</span><span class="chip">189</span><span class="chip">209</span><span class="chip">252</span>
+        </div>
+        <p style="margin-top:10px">Partly canon, partly original (worth watching &#8212; plot-relevant moments are mixed in): <span class="chip">82</span><span class="chip">111</span><span class="chip">120</span><span class="chip">367</span></p>
+        <p>One correction to a common claim: episodes 125 and 209 are often called out specifically as "recap" episodes. They're anime-original filler, yes &#8212; but nothing in the trackers actually tags them as clip-show recaps, so that specific label doesn't check out.</p>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary>About the cover art <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
+      <div class="fold-body">
+        <p>Each poster is hotlinked straight from MyAnimeList's own image CDN &#8212; nothing to download, nothing to host yourself. If a link ever goes stale, that card just falls back to its plain icon instead of breaking.</p>
+        <p>Viewed as a claude.ai Artifact, external images are blocked by design, so posters won't show up here &#8212; only once this page is hosted elsewhere (GitHub Pages, or anywhere else) will they load. Want them to survive MyAnimeList changing a URL down the line? Save the images locally into an <code>images/</code> folder and swap each <code>img:</code> entry in the page's source to point at the local file instead &#8212; same layout, just a different source. The &#37504;&#39746; wordmark, icons and dividers are hand-drawn in CSS/SVG either way, not borrowed art.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <p class="foot-note">Built from cross-referenced release dates, episode counts and relation data across MyAnimeList, AniList and Wikipedia. Runtimes are rounded. If you spot something off, say the word.</p>
+</div>
+
+<script>
+const ICONS = {
+  tv:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="M8 3l4 3 4-3"/></svg>',
+  movie:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M3 7l3-4h3l-3 4M10 7l3-4h3l-3 4M17 7l3-4"/></svg>',
+  ova: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/></svg>',
+  special:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 5.6L19 10l-5.2 1.4L12 17l-1.8-5.6L5 10l5.2-1.4L12 3z"/></svg>'
+};
+const NOTE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M11 11h1v5h1"/></svg>';
+
+const DATA = [
+{part:1, status:'gag', format:'special', no:1,
+  img:'https://cdn.myanimelist.net/images/anime/1897/139500.jpg',
+  en:'Jump Festa 2005 Special', sub:'the one before the anime existed',
+  badges:['2005','Special','~32 min'],
+  teaser:'The very first Gintama animation — made before the TV series existed.',
+  detail:"A standalone promotional short shown on stage at a Jump Festa event to announce the coming TV adaptation, played completely straight for laughs. It doesn't connect to any story arc, so there's no rush to watch it before you know the cast.",
+  note:'Watch it first, or hold off until you\'ve seen a handful of TV episodes and know who everyone is — either way works.'},
+
+{part:1, status:'canon', format:'tv', no:2,
+  img:'https://cdn.myanimelist.net/images/anime/10/73274.jpg',
+  en:'Gintama (2006)', sub:'episodes 1–124',
+  badges:['2006–07','TV','Ep. 1–124'],
+  teaser:'Odd jobs, a wooden sword, and the Benizakura Arc (ep. 58–61).',
+  detail:"The Yorozuya's episodic odd-job setup gives way to the show's first serious arcs, Benizakura chief among them. This is the mainline story — start here for the real thing.",
+  note:'Episodes 1–2 are an anime-only "we got an anime!" celebration skit, not adapted from the manga — the single most commonly skipped episodes in the whole franchise. Jumping straight to episode 3 loses you nothing.'},
+
+{part:1, status:'gag', format:'special', no:3,
+  img:'https://cdn.myanimelist.net/images/anime/6/16161.jpg',
+  en:'Shiroyasha Koutan', sub:'白夜叉降誕 · Jump Festa 2008',
+  badges:['2008','Special','~10 min'],
+  teaser:'A fake movie trailer, played for maximum trolling.',
+  detail:'Announced like a serious spin-off about Gintoki\'s past as the feared "White Demon," it opens with a moody war trailer — then cuts to the cast furious at being tricked into hyping a movie that isn\'t real. Pure gag, watched right after episode 124.'},
+
+{part:1, status:'canon', format:'tv', no:4,
+  img:'https://cdn.myanimelist.net/images/anime/10/73274.jpg',
+  en:'Gintama (2006)', sub:'episodes 125–201',
+  badges:['2007–10','TV','Ep. 125–201'],
+  teaser:'The first TV series builds all the way to its finale.',
+  detail:'Closes out the original 201-episode run. Episode 125 itself is anime-original filler, so don\'t expect much plot progress right at the start of this stretch.'},
+
+{part:1, status:'gag', format:'special', no:5,
+  img:'https://cdn.myanimelist.net/images/anime/1725/110927.jpg',
+  en:'Dai Hanseikai', sub:'大反省会 · "Grand Reflection Meeting"',
+  badges:['2010','Special','~14 min'],
+  teaser:'The cast puts the entire first series on trial.',
+  detail:'A self-aware, clip-heavy roast of the just-finished TV run, aired as a bridge before the second series begins.'},
+
+{part:1, status:'bonus', format:'movie', no:6,
+  img:'https://cdn.myanimelist.net/images/anime/4/28803.jpg',
+  en:'Gintama: The Movie', sub:'新訳紅桜篇 · Shinyaku Benizakura-hen',
+  badges:['2010','Movie','~95 min'],
+  teaser:'The Benizakura Arc, redone with a theatrical budget.',
+  detail:'A glossier remake of episodes 58–61 with noticeably better animation. It retells a story you\'ve already watched rather than adding anything new to it — which is exactly what makes it skippable.',
+  note:'Not a replacement for episodes 58–61 — those stay in the TV run. This is the bonus rewatch, saved for after the full 201-episode series.'},
+
+{part:1, status:'gag', format:'special', no:7,
+  img:'https://cdn.myanimelist.net/images/anime/12/26966.jpg',
+  en:'Shinyaku Benizakura-hen Special', sub:'the kotatsu one',
+  badges:['2010','Special','~11 min'],
+  teaser:'The cast sits around a kotatsu and makes fun of the movie you just watched.',
+  detail:'An 11-minute meta-comedy short built almost entirely around one running joke: the animators reusing New Year\'s footage because there was no budget left. Not the movie itself — reactions to it.'},
+
+{part:2, status:'canon', format:'tv', no:8,
+  img:'https://cdn.myanimelist.net/images/anime/4/50361.jpg',
+  en:"Gintama'", sub:'episodes 202–252',
+  badges:['2011–12','TV','Ep. 202–252'],
+  teaser:'Second TV series — heavier arcs, higher stakes.',
+  detail:'Picks the story back up with darker, more consequential arcs as the Shinsengumi and Yato-clan threads deepen.'},
+
+{part:2, status:'canon', format:'tv', no:9,
+  img:'https://cdn.myanimelist.net/images/anime/1452/123686.jpg',
+  en:"Gintama': Enchousen", sub:'延長戦 · "extended run"',
+  badges:['2012–13','TV','Ep. 253–265'],
+  teaser:'A short, direct continuation pushing toward the season\'s climax.',
+  detail:'Thirteen episodes billed as an "extended run" (a bathhouse pun — enchousen means extended bath hours). Straight continuation, no gaps.'},
+
+{part:2, status:'bonus', format:'special', no:10,
+  img:'https://cdn.myanimelist.net/images/anime/1327/110925.jpg',
+  en:'Futon ni Haitte kara...', sub:'布団に入ってから... · bundled w/ manga vol. 58',
+  badges:['2015','Special','~24 min'],
+  teaser:'One more wake-up call before the next era begins.',
+  detail:'A standalone "let\'s all wake up together one more time" bonus episode, previewed at Jump Festa 2014 and released alongside a manga volume.',
+  note:'It aired right as the next TV season was about to premiere, and some viewers mistook it for that season\'s first episode. It isn\'t — watch it here, before that season starts, not partway through it.'},
+
+{part:2, status:'bonus', format:'movie', no:11,
+  img:'https://cdn.myanimelist.net/images/anime/10/51723.jpg',
+  en:'Gintama: Be Forever Yorozuya', sub:'完結篇・万事屋よ永遠なれ',
+  badges:['2013','Movie','~110 min'],
+  teaser:'An original "what if this were the ending" story.',
+  detail:'A time-travel story built specifically as a satisfying hypothetical finale. Non-canon to the manga, but a genuine fan favorite and mostly self-contained.'},
+
+{part:3, status:'canon', format:'tv', no:12,
+  img:'https://cdn.myanimelist.net/images/anime/3/72078.jpg',
+  en:'Gintama°', sub:'episodes 266–316',
+  badges:['2015–16','TV','Ep. 266–316'],
+  teaser:'Fourth TV series — watched straight through, no internal split.',
+  detail:'A common mistake is chopping this season into two pieces around episode 295 for the Futon special (entry 10). That special belongs before this season, not inside it — so this one just runs uninterrupted.'},
+
+{part:3, status:'gag', format:'special', no:13,
+  img:'https://cdn.myanimelist.net/images/anime/1720/110926.jpg',
+  en:'Umai-mono wa Atomawashi...', sub:'うまい物は後回し... · Jump Festa 2015',
+  badges:['2015','Special','~12 min'],
+  teaser:'Eat the good stuff first, or someone else will.',
+  detail:'Another Jump Festa comedy short, later streamed by Crunchyroll. Watched after finishing Gintama°.'},
+
+{part:3, status:'canon', format:'ova', no:14,
+  img:'https://cdn.myanimelist.net/images/anime/1962/133573.jpg',
+  en:'Gintama°: Aizome Kaori-hen', sub:'愛染香篇 · "Love Potion" arc',
+  badges:['2016','OVA','2 episodes'],
+  teaser:'The one arc that skipped TV entirely.',
+  detail:'An actual manga story — not a joke short — that got a direct-to-OVA release instead of a broadcast slot. Unlike most specials on this list, this one is real side-story canon.'},
+
+{part:3, status:'canon', format:'tv', no:15,
+  img:'https://cdn.myanimelist.net/images/anime/3/83528.jpg',
+  en:'Gintama.', sub:'the Rakuyou Decisive Battle Arc',
+  badges:['2017','TV','Ep. 317–328'],
+  teaser:'The endgame begins.',
+  detail:'Twelve episodes covering the Rakuyou Decisive Battle Arc — the story tightens up considerably from here on.'},
+
+{part:3, status:'canon', format:'tv', no:16,
+  img:'https://cdn.myanimelist.net/images/anime/11/88325.jpg',
+  en:'Gintama.: Porori-hen', sub:'ポロリ篇 · a.k.a. "Slip Arc"',
+  badges:['2017','TV','Ep. 329–341'],
+  teaser:'A comedic breather with the finale looming.',
+  detail:'Thirteen episodes mixing slice-of-life comedy with continued build-up to the ending.',
+  note:'Watched in broadcast order, right after episode 328. Some lists claim this should be watched before Gintama. "for chronology" — no reliable source backs that reordering, so this keeps release order.'},
+
+{part:3, status:'canon', format:'tv', no:17,
+  img:'https://cdn.myanimelist.net/images/anime/12/89603.jpg',
+  en:'Gintama.: Shirogane no Tamashii-hen', sub:'銀魂篇 · the Silver Soul Arc',
+  badges:['2018','TV','Ep. 342–353'],
+  teaser:'The beginning of the end.',
+  detail:'First half of the final arc — the story the title itself, Silver Soul, is named for.'},
+
+{part:3, status:'canon', format:'tv', no:18,
+  img:'https://cdn.myanimelist.net/images/anime/1776/96566.jpg',
+  en:'...Kouhan-sen', sub:'後半戦 · Silver Soul, second half',
+  badges:['2018','TV','Ep. 354–367'],
+  teaser:'The finale\'s second half — direct continuation.',
+  detail:'Picks up immediately where the first half leaves off and carries the TV story to its conclusion.'},
+
+{part:3, status:'canon', format:'special', no:19,
+  img:'https://cdn.myanimelist.net/images/anime/1694/110521.jpg',
+  en:'Gintama: The Semi-Final', sub:'the bridge to the last movie',
+  badges:['Jan 2021','Special','2 episodes'],
+  teaser:'The gap between the TV finale and the last movie, closed.',
+  detail:'Two episodes tying off loose threads — Gintoki and Shinpachi\'s reunion, Kondou\'s diplomatic misadventure — between the TV ending and the final film.',
+  note:'The movie technically hit theaters a week earlier — but this special\'s own official relation data lists the TV finale as its prequel and the movie as its sequel, which is the narrative order that matters here.'},
+
+{part:3, status:'canon', format:'movie', no:20,
+  img:'https://cdn.myanimelist.net/images/anime/1245/116760.jpg',
+  en:'Gintama: The Very Final', sub:'the end',
+  badges:['Jan 2021','Movie'],
+  teaser:'The story\'s actual conclusion.',
+  detail:'Adapts the manga\'s final chapters and closes the story out for good.'},
+];
+
+const PARTS = {
+  1:{title:'The Beginning', years:'2005 – 2010'},
+  2:{title:'The Middle Years', years:'2011 – 2013'},
+  3:{title:'The Final Stretch', years:'2015 – 2021'}
+};
+
+const root = document.getElementById('parts');
+let html = '';
+[1,2,3].forEach((p,pi)=>{
+  if(pi>0){
+    html += '<svg class="brush" viewBox="0 0 400 14" preserveAspectRatio="none"><path d="M0,7 C60,2 90,12 150,7 S260,2 300,8 380,4 400,7"/></svg>';
+  }
+  html += `<div class="part-head"><span class="num">${['I','II','III'][pi]}</span><h2>${PARTS[p].title}</h2><span class="years">${PARTS[p].years}</span></div>`;
+  html += '<div class="timeline">';
+  DATA.filter(d=>d.part===p).forEach(d=>{
+    html += `<div class="entry status-${d.status}">
+      <div class="marker">${ICONS[d.format]}</div>
+      <div class="card">
+        <div class="card-face" tabindex="0" role="button" aria-expanded="false">
+          <div class="face-inner">
+            <div class="poster">${ICONS[d.format]}<img src="${d.img}" alt="" loading="lazy" onerror="this.remove()"></div>
+            <div class="face-main">
+              <div class="row1">
+                <div class="titles">
+                  <div class="title-en"><span class="no">${String(d.no).padStart(2,'0')}</span>${d.en}</div>
+                  <div class="title-sub">${d.sub}</div>
+                </div>
+                <svg class="chev-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+              <div class="badges">${d.badges.map(b=>`<span class="badge">${b}</span>`).join('')}</div>
+              <div class="teaser">${d.teaser}</div>
+            </div>
+          </div>
+        </div>
+        <div class="detail"><div class="detail-in">
+          <p>${d.detail}</p>
+          ${d.note ? `<div class="note">${NOTE_ICON}<span>${d.note}</span></div>` : ''}
+        </div></div>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+});
+root.innerHTML = html;
+
+document.querySelectorAll('.card-face').forEach(face=>{
+  const card = face.parentElement;
+  const toggle = ()=>{
+    const open = card.classList.toggle('is-open');
+    face.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  face.addEventListener('click', toggle);
+  face.addEventListener('keydown', e=>{
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }
+  });
+});
+</script>
