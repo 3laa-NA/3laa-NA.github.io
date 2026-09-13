@@ -40,17 +40,41 @@
   </header>
 
   <main>
-    <h2>Categories</h2>
-    <p class="section-sub">Browse by topic.</p>
-    <div class="card-grid">
-      <a class="card-link" href="anime/">
-        <span class="card-tag">Anime</span>
-        <h3>Guides</h3>
-        <p>Watch orders, guides, and notes.</p>
-      </a>
-      <!-- add portfolio projects / categories here later -->
+    <h2>Everything</h2>
+    <p class="section-sub">Filter by tag, or just scroll.</p>
+
+    <div class="tag-filter" id="tag-filter">
+      <button class="tag-chip active" data-tag="all">All</button>
+      <button class="tag-chip" data-tag="anime">Anime</button>
+      <button class="tag-chip" data-tag="manga">Manga</button>
+      <button class="tag-chip" data-tag="guide">Guide</button>
+      <button class="tag-chip" data-tag="tools">Tools</button>
     </div>
-    <div class="placeholder">More categories and projects coming soon.</div>
+
+    <div class="card-grid" id="card-grid">
+      <a class="card-link" href="gintama-watch-order.html" data-tags="anime guide">
+        <div class="card-tags"><span class="tag-pill">Anime</span><span class="tag-pill">Guide</span></div>
+        <h3>Gintama Watch Order (Claude)</h3>
+        <p>The complete, corrected watch order &mdash; TV, movies, OVAs and specials.</p>
+      </a>
+      <a class="card-link" href="gintama-watch-order-ds.html" data-tags="anime guide">
+        <div class="card-tags"><span class="tag-pill">Anime</span><span class="tag-pill">Guide</span></div>
+        <h3>Gintama Watch Order (DeepSeek)</h3>
+        <p>Same idea, different take &mdash; kept side by side for comparison.</p>
+      </a>
+      <a class="card-link" href="manga-extensions-report.html" data-tags="manga tools">
+        <div class="card-tags"><span class="tag-pill">Manga</span><span class="tag-pill">Tools</span></div>
+        <h3>Manga Extension Field Test</h3>
+        <p>39 manga/manhwa/comics extensions tested and ranked across six categories.</p>
+      </a>
+      <a class="card-link" href="repos-report.html" data-tags="anime manga tools">
+        <div class="card-tags"><span class="tag-pill">Anime</span><span class="tag-pill">Manga</span><span class="tag-pill">Tools</span></div>
+        <h3>Extension Repo Index</h3>
+        <p>Copy-paste-ready repo URLs for Aniyomi, Mangayomi, Kotatsu, Cloudstream, Sora and LNReader &mdash; incl. an Arabic-content table.</p>
+      </a>
+      <!-- add more cards here later: <a class="card-link" href="..." data-tags="..."><div class="card-tags">...</div><h3>...</h3><p>...</p></a> -->
+    </div>
+    <div class="placeholder" id="empty-state" hidden>Nothing matches that tag yet.</div>
   </main>
 
   <footer class="site-footer">
@@ -59,5 +83,50 @@
   </footer>
 
 </div>
+
+<script>
+  const chips = Array.from(document.querySelectorAll('#tag-filter .tag-chip'));
+  const cards = Array.from(document.querySelectorAll('#card-grid .card-link'));
+  const emptyState = document.getElementById('empty-state');
+  const allChip = chips[0];
+  let active = new Set(['all']);
+
+  function applyFilter() {
+    let visible = 0;
+    cards.forEach(card => {
+      const tags = card.dataset.tags.split(' ');
+      const show = active.has('all') || tags.some(t => active.has(t));
+      card.hidden = !show;
+      if (show) visible++;
+    });
+    emptyState.hidden = visible !== 0;
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const tag = chip.dataset.tag;
+      if (tag === 'all') {
+        chips.forEach(c => c.classList.remove('active'));
+        allChip.classList.add('active');
+        active = new Set(['all']);
+      } else {
+        allChip.classList.remove('active');
+        active.delete('all');
+        if (active.has(tag)) {
+          active.delete(tag);
+          chip.classList.remove('active');
+        } else {
+          active.add(tag);
+          chip.classList.add('active');
+        }
+        if (active.size === 0) {
+          allChip.classList.add('active');
+          active.add('all');
+        }
+      }
+      applyFilter();
+    });
+  });
+</script>
 </body>
 </html>
