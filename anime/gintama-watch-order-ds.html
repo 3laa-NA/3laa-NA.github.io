@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gintama — Complete Watch Order</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-deep: #0a0c12; --bg-card: #12161f; --accent: #e63946;
+    --accent-soft: rgba(230, 57, 70, 0.35); --gold: #f4a261;
+    --text-primary: #eaeef5; --text-secondary: #98a3b6;
+    --text-muted: #5a6578; --border: rgba(255, 255, 255, 0.07);
+    --radius: 14px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+    background: var(--bg-deep); color: var(--text-primary);
+    line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 15% 0%, rgba(230,57,70,0.09) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 100%, rgba(244,162,97,0.06) 0%, transparent 55%);
+    pointer-events: none; z-index: 0;
+  }
+  .wrapper { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+  .icon { display: inline-block; width: 1em; height: 1em; flex-shrink: 0; vertical-align: -0.125em;
+    fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  header { text-align: center; padding: 2.5rem 0 0.5rem; }
+  .logo {
+    font-size: clamp(2.8rem, 9vw, 5.5rem); font-weight: 900; letter-spacing: 0.06em; line-height: 1.05;
+    background: linear-gradient(135deg, #ff4d5e 0%, #e63946 40%, #f4a261 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 45px rgba(230,57,70,0.35)); user-select: none;
+  }
+  .logo-jp { display: block; font-size: clamp(0.7rem, 2.2vw, 0.95rem); font-weight: 400;
+    letter-spacing: 0.55em; color: var(--text-muted); margin-top: 0.5rem; text-indent: 0.55em; }
+  .subtitle { margin: 1rem auto 0; font-size: clamp(0.85rem, 2.2vw, 1rem);
+    color: var(--text-secondary); max-width: 620px; line-height: 1.7; }
+  .stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem 1.6rem;
+    margin-top: 1.6rem; font-size: 0.78rem; color: var(--text-muted); }
+  .stat { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .stat .icon { color: var(--accent); width: 14px; height: 14px; }
+  .divider { width: 90px; height: 3px; margin: 2rem auto 2.5rem;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--gold), transparent); border-radius: 99px; }
+  .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.1rem;
+    margin-bottom: 3rem; padding: 0.9rem 1.2rem; background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border); border-radius: 99px; max-width: 720px; margin-left: auto; margin-right: auto; }
+  .legend-item { display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em; color: var(--text-secondary); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .part-head { position: relative; margin: 2.5rem 0 1.5rem; padding: 1.4rem 1.6rem 1.4rem 1.8rem;
+    background: linear-gradient(100deg, rgba(230,57,70,0.10), rgba(244,162,97,0.03) 60%, transparent);
+    border-radius: 16px; border-left: 4px solid var(--accent); }
+  .part-head:first-of-type { margin-top: 0; }
+  .part-label { display: inline-block; font-size: 0.62rem; font-weight: 800;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem; }
+  .part-title { font-size: clamp(1.25rem, 3.6vw, 1.7rem); font-weight: 900;
+    letter-spacing: -0.01em; line-height: 1.2; }
+  .part-sub { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.3rem; }
+
+  /* ══════════ ROADMAP & ENTRY LAYOUT ══════════ */
+  .roadmap { display: flex; flex-direction: column; max-width: 1000px; margin: 0 auto; }
+
+  /* Mobile: poster → info → arrow */
+  .entry { display: flex; flex-direction: column; gap: 1.25rem; padding: 1.1rem 0; }
+  .visual { display: contents; }
+  .poster { order: 1; align-self: center; }
+  .info { order: 2; }
+  .connector { order: 3; align-self: center; }
+
+  /* Desktop: two-column grid (poster+arrow | info) */
+  @media (min-width: 820px) {
+    .entry {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2.6rem;
+      align-items: start;
+    }
+    .visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    .poster, .info, .connector {
+      order: initial;
+      align-self: auto;
+    }
+  }
+
+  .poster { position: relative; width: 100%; max-width: 205px; aspect-ratio: 2 / 3;
+    border-radius: 12px; overflow: hidden; background: linear-gradient(158deg, var(--c1), var(--c2));
+    box-shadow: 0 12px 32px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.07) inset;
+    transition: transform 0.35s cubic-bezier(0.25,0.8,0.25,1), box-shadow 0.35s cubic-bezier(0.25,0.8,0.25,1); }
+  @media (min-width: 820px) { .poster { max-width: 250px; } }
+  .entry:hover .poster { transform: translateY(-6px) scale(1.025);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.65), 0 0 36px var(--accent-soft), 0 0 0 1px rgba(255,255,255,0.12) inset; }
+  .poster-img { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center; opacity: 0; transition: opacity 0.6s ease; }
+  .poster-img.loaded { opacity: 1; }
+  .poster::after { content: ''; position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(115deg, rgba(255,255,255,0.12) 0%, transparent 42%); pointer-events: none; }
+  .poster-kanji { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center;
+    font-size: 7rem; font-weight: 900; color: rgba(255,255,255,0.11); line-height: 1;
+    user-select: none; font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif; transition: color 0.4s ease; }
+  .poster.has-img .poster-kanji { color: rgba(255,255,255,0.06); }
+  .poster-num { position: absolute; top: 9px; left: 10px; z-index: 3; font-size: 0.66rem;
+    font-weight: 800; letter-spacing: 0.12em; color: rgba(255,255,255,0.85);
+    background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.14);
+    padding: 0.14rem 0.44rem; border-radius: 5px; backdrop-filter: blur(6px); }
+  .poster-format { position: absolute; top: 9px; right: 10px; z-index: 3; width: 22px; height: 22px;
+    display: grid; place-items: center; border-radius: 6px; background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.14); backdrop-filter: blur(6px); }
+  .poster-format .icon { width: 12px; height: 12px; }
+  .poster-foot { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+    padding: 3rem 0.85rem 0.85rem; background: linear-gradient(to top, rgba(0,0,0,0.94) 15%, rgba(0,0,0,0.55) 55%, transparent); }
+  .poster-title { display: block; font-size: 0.76rem; font-weight: 800; line-height: 1.3;
+    color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.7); }
+  .poster-sub { display: block; font-size: 0.58rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 0.28rem; }
+  .connector { display: flex; flex-direction: column; align-items: center;
+    padding: 0.55rem 0 0.75rem; color: var(--accent); opacity: 0.75; }
+  .connector .line { width: 2px; height: 26px;
+    background: linear-gradient(to bottom, transparent, rgba(230,57,70,0.7)); border-radius: 2px; }
+  .connector .chev { width: 20px; height: 20px; margin-top: -4px; fill: none;
+    stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .entry:hover .connector { opacity: 1; }
+  .info { min-width: 0; padding-top: 0.2rem; }
+  @media (min-width: 820px) { .info { padding-top: 0.4rem; } }
+  .info-head { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .badge { display: inline-flex; align-items: center; gap: 0.32rem; font-size: 0.6rem;
+    font-weight: 800; letter-spacing: 0.11em; text-transform: uppercase;
+    padding: 0.26rem 0.68rem; border-radius: 99px; white-space: nowrap; }
+  .badge .icon { width: 12px; height: 12px; }
+  .badge--tv { background: rgba(230,57,70,0.14); color: #f28a8a; border: 1px solid rgba(230,57,70,0.3); }
+  .badge--movie { background: rgba(244,162,97,0.14); color: var(--gold); border: 1px solid rgba(244,162,97,0.3); }
+  .badge--special { background: rgba(108,191,117,0.12); color: #8fd99a; border: 1px solid rgba(108,191,117,0.28); }
+  .badge--ova { background: rgba(129,140,248,0.12); color: #a5b4fc; border: 1px solid rgba(129,140,248,0.28); }
+  .entry-title { font-size: clamp(1.05rem, 2.6vw, 1.32rem); font-weight: 800;
+    line-height: 1.28; letter-spacing: -0.01em; margin-bottom: 0.45rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem;
+    font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.7rem; }
+  .meta span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .meta .icon { width: 13px; height: 13px; color: var(--text-muted); }
+  .synopsis { font-size: 0.84rem; line-height: 1.68; color: var(--text-secondary); max-width: 620px; }
+  .note { display: flex; gap: 0.55rem; padding: 0.62rem 0.8rem; border-radius: 9px;
+    font-size: 0.77rem; line-height: 1.6; margin-top: 0.7rem; max-width: 620px; border-left: 3px solid; }
+  .note .icon { width: 14px; height: 14px; margin-top: 3px; }
+  .note p { margin: 0; }
+  .note--info { background: rgba(100,150,220,0.07); border-color: #6b9bd2; color: #a3c0e4; }
+  .note--warn { background: rgba(230,57,70,0.07); border-color: var(--accent); color: #eea5a5; }
+  .note--tip { background: rgba(244,162,97,0.07); border-color: var(--gold); color: #eecb96; }
+  .skip-tag { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.58rem;
+    font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.13rem 0.45rem; border-radius: 4px; background: rgba(230,57,70,0.2); color: #f28a8a; vertical-align: middle; }
+  .skip-tag .icon { width: 10px; height: 10px; }
+  .info-section { margin-top: 3.5rem; padding: 1.9rem 1.6rem;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); }
+  .info-section h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 1.3rem;
+    display: flex; align-items: center; gap: 0.55rem; }
+  .info-section h2 .icon { width: 20px; height: 20px; color: var(--accent); }
+  .info-grid { display: grid; gap: 1rem; }
+  @media (min-width: 660px) { .info-grid { grid-template-columns: 1fr 1fr; } }
+  .info-block { background: rgba(255,255,255,0.022); border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 11px; padding: 1.1rem 1.2rem; }
+  .info-block h3 { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8rem;
+    font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.7rem; color: var(--gold); }
+  .info-block h3 .icon { width: 14px; height: 14px; }
+  .info-block p, .info-block li { font-size: 0.79rem; line-height: 1.65; color: var(--text-secondary); }
+  .info-block ul { list-style: none; }
+  .info-block ul li { position: relative; padding-left: 1rem; margin-bottom: 0.3rem; }
+  .info-block ul li::before { content: ''; position: absolute; left: 0; top: 0.62em;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+  .ep-list { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.74rem; line-height: 1.85; color: var(--text-secondary); word-break: break-word; }
+  .copy-bar { display: flex; justify-content: center; margin-top: 2.2rem; }
+  .copy-btn { display: inline-flex; align-items: center; gap: 0.55rem;
+    background: linear-gradient(135deg, var(--accent), #b81f2c); color: #fff; border: none;
+    padding: 0.78rem 1.8rem; border-radius: 99px; font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.03em; font-family: inherit; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 6px 24px var(--accent-soft); }
+  .copy-btn .icon { width: 16px; height: 16px; }
+  .copy-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 34px var(--accent-soft); }
+  .copy-btn:active { transform: translateY(0); }
+  .copy-btn .check-icon { display: none; }
+  .copy-btn.copied .copy-icon { display: none; }
+  .copy-btn.copied .check-icon { display: inline-block; }
+  .footer { text-align: center; margin-top: 3rem; padding-top: 1.6rem;
+    border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--text-muted); line-height: 1.8; }
+  ::-webkit-scrollbar { width: 9px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: #262d3d; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #363f54; }
+  @media (max-width: 480px) {
+    .wrapper { padding: 1rem 0.9rem 3.5rem; }
+    .poster { max-width: 185px; } .poster-kanji { font-size: 5.5rem; }
+    .part-head { padding: 1.1rem 1.1rem 1.1rem 1.3rem; }
+    .legend { border-radius: 16px; padding: 0.8rem 1rem; }
+    .note { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-tv" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.2"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="i-disc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  <symbol id="i-skip" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+</svg>
+
+<div class="wrapper">
+  <header>
+    <div class="logo">GINTAMA</div>
+    <span class="logo-jp">銀魂</span>
+    <p class="subtitle">The complete, canonical watch order — every TV season, movie, OVA and Jump Festa special, arranged so the story flows naturally from the first joke to the final farewell.</p>
+    <div class="stats">
+      <span class="stat"><svg class="icon"><use href="#i-layers"/></svg> 22 entries</span>
+      <span class="stat"><svg class="icon"><use href="#i-tv"/></svg> 367 episodes</span>
+      <span class="stat"><svg class="icon"><use href="#i-film"/></svg> 3 movies</span>
+      <span class="stat"><svg class="icon"><use href="#i-skip"/></svg> ~6% filler</span>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#e63946"></span> TV Series</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#f4a261"></span> Movie</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#6cbf75"></span> Special</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#818cf8"></span> OVA</span>
+  </div>
+
+  <!-- ═══════════ PART 1 ═══════════ -->
+  <div class="part-head">
+    <span class="part-label">Part 1</span>
+    <h2 class="part-title">The Beginning</h2>
+    <p class="part-sub">2005 – 2010 &middot; The Yorozuya forms and the Benizakura Arc hits</p>
+  </div>
+
+  <div class="roadmap">
+
+    <article class="entry" id="e1">
+      <div class="visual">
+        <div class="poster" style="--c1:#2b2f45;--c2:#141826">
+          <span class="poster-num">01</span>
+          <span class="poster-format"><svg class="icon" style="color:#8fd99a"><use href="#i-star"/></svg></span>
+          <span class="poster-kanji">始</span>
+          <div class="poster-foot"><span class="poster-title">Jump Festa 2005 Special</span><span class="poster-sub">2005 &middot; Special</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--special"><svg class="icon"><use href="#i-star"/></svg> Special</span></div>
+        <h3 class="entry-title">Jump Festa 2005 Special</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 33 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Sep 24, 2005</span></div>
+        <p class="synopsis">A standalone comedy OVA released before the TV series. Gintoki, Shinpachi and Kagura stumble through short comedic vignettes in an alien-occupied Edo.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>Some fans recommend waiting until after ~20 episodes so you already know the characters. Either way, it's pure comedy with zero plot impact.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e2">
+      <div class="visual">
+        <div class="poster" style="--c1:#7a1f2b;--c2:#2a0d13">
+          <span class="poster-num">02</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">銀</span>
+          <div class="poster-foot"><span class="poster-title">Gintama (2006)</span><span class="poster-sub">Ep 3–57 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama (2006) — Episodes 3–57</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 55 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Apr 2006 – Mar 2007</span></div>
+        <p class="synopsis">The story truly begins here. Gintoki, Shinpachi and Kagura take odd jobs in a futuristic Edo overrun by aliens. Parody, gag humour, and the slow build of the Yorozuya family.</p>
+        <div class="note note--warn"><svg class="icon"><use href="#i-alert"/></svg><p><strong>Skip Episodes 1–2.</strong> They're a confusing announcement special. The real story starts at Episode 3.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e3">
+      <div class="visual">
+        <div class="poster" style="--c1:#8c3a12;--c2:#3a1508">
+          <span class="poster-num">03</span>
+          <span class="poster-format"><svg class="icon" style="color:#f4a261"><use href="#i-film"/></svg></span>
+          <span class="poster-kanji">紅</span>
+          <div class="poster-foot"><span class="poster-title">Gintama: The Movie</span><span class="poster-sub">2010 &middot; Movie</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--movie"><svg class="icon"><use href="#i-film"/></svg> Movie</span></div>
+        <h3 class="entry-title">Gintama: The Movie — Benizakura Arc</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 95 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Apr 24, 2010</span></div>
+        <p class="synopsis">A high-budget remake of the Benizakura Arc. The definitive version of the story that finally kicks the serious plot into gear.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>Watch this <strong>instead of Episodes 58–61</strong>. The movie retells the exact same arc with far superior animation.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e4">
+      <div class="visual">
+        <div class="poster" style="--c1:#1f3a5f;--c2:#0d1a2b">
+          <span class="poster-num">04</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">魂</span>
+          <div class="poster-foot"><span class="poster-title">Gintama (2006)</span><span class="poster-sub">Ep 62–124 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama (2006) — Episodes 62–124</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 63 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> 2007 – 2009</span></div>
+        <p class="synopsis">The first TV series continues with more arcs, more parodies and deeper character development.</p>
+        <div class="note note--warn"><svg class="icon"><use href="#i-alert"/></svg><p><strong>Stop after Episode 124.</strong> Pause here to watch the Jump Festa 2008 special before continuing.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e5">
+      <div class="visual">
+        <div class="poster" style="--c1:#4a4a52;--c2:#1c1c22">
+          <span class="poster-num">05</span>
+          <span class="poster-format"><svg class="icon" style="color:#8fd99a"><use href="#i-star"/></svg></span>
+          <span class="poster-kanji">白</span>
+          <div class="poster-foot"><span class="poster-title">Shiroyasha Koutan</span><span class="poster-sub">2008 &middot; Special</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--special"><svg class="icon"><use href="#i-star"/></svg> Special</span></div>
+        <h3 class="entry-title">Shiroyasha Koutan</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 10 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Sep 21, 2008</span></div>
+        <p class="synopsis">A famous troll special. The first minutes are a beautifully animated fake trailer for a "Shiroyasha" movie — then the characters sit in a theatre and ruthlessly complain about it.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>Pure meta-humour. Watch it right after Episode 124.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e6">
+      <div class="visual">
+        <div class="poster" style="--c1:#6b1f3a;--c2:#240a14">
+          <span class="poster-num">06</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">笑</span>
+          <div class="poster-foot"><span class="poster-title">Gintama (2006)</span><span class="poster-sub">Ep 125–201 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama (2006) — Episodes 125–201</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 76 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> 2009 – 2010</span></div>
+        <p class="synopsis">The conclusion of the first TV series. Major arcs, emotional payoffs and the setup for everything that follows.</p>
+        <div class="note note--warn"><svg class="icon"><use href="#i-alert"/></svg><p><strong>Skip Episode 125</strong> <span class="skip-tag"><svg class="icon"><use href="#i-skip"/></svg>Recap</span> — a clip show of Yorozuya and Shinsengumi moments.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e7">
+      <div class="visual">
+        <div class="poster" style="--c1:#8a6a1f;--c2:#2e2208">
+          <span class="poster-num">07</span>
+          <span class="poster-format"><svg class="icon" style="color:#8fd99a"><use href="#i-star"/></svg></span>
+          <span class="poster-kanji">祭</span>
+          <div class="poster-foot"><span class="poster-title">Dai Hanseikai</span><span class="poster-sub">2010 &middot; Special</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--special"><svg class="icon"><use href="#i-star"/></svg> Special</span></div>
+        <h3 class="entry-title">Dai Hanseikai</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 14 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Mar 25, 2010</span></div>
+        <p class="synopsis">A retrospective special aired before the second season. The characters gather to talk about their "regrets" — then immediately start fighting over screen time.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>A fun bridge between seasons. Watch after Episode 201.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e8">
+      <div class="visual">
+        <div class="poster" style="--c1:#5c1f2e;--c2:#1e0a10">
+          <span class="poster-num">08</span>
+          <span class="poster-format"><svg class="icon" style="color:#8fd99a"><use href="#i-star"/></svg></span>
+          <span class="poster-kanji">劇</span>
+          <div class="poster-foot"><span class="poster-title">Shinyaku Benizakura-hen</span><span class="poster-sub">2010 &middot; Special</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--special"><svg class="icon"><use href="#i-star"/></svg> Special</span></div>
+        <h3 class="entry-title">Shinyaku Benizakura-hen</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 11 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Dec 15, 2010</span></div>
+        <p class="synopsis">A comedy special bundled with the Benizakura movie DVD. The Yorozuya sit around a kotatsu, discuss the movie, and Shinpachi complains about reused animation footage.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>Pure meta-humour — not the movie itself, just the cast mocking the production.</p></div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════ PART 2 ═══════════ -->
+  <div class="part-head">
+    <span class="part-label">Part 2</span>
+    <h2 class="part-title">The Middle Era</h2>
+    <p class="part-sub">2011 – 2013 &middot; The second series, Enchousen, and the "potential ending" film</p>
+  </div>
+
+  <div class="roadmap">
+
+    <article class="entry" id="e9">
+      <div class="visual">
+        <div class="poster" style="--c1:#2d5a4a;--c2:#0f211b">
+          <span class="poster-num">09</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">再</span>
+          <div class="poster-foot"><span class="poster-title">Gintama' (2011)</span><span class="poster-sub">Ep 202–252 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama' (2011) — Episodes 202–252</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 51 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Apr 2011 – Mar 2012</span></div>
+        <p class="synopsis">After a one-year hiatus, Shinpachi returns to Edo to find everything changed — Gintoki and Kagura are different people, and the Shinsengumi has been turned upside down.</p>
+        <div class="note note--warn"><svg class="icon"><use href="#i-alert"/></svg><p><strong>Skip Episode 209</strong> <span class="skip-tag"><svg class="icon"><use href="#i-skip"/></svg>Recap</span> — a meta recap episode.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e10">
+      <div class="visual">
+        <div class="poster" style="--c1:#4a2a6b;--c2:#180d24">
+          <span class="poster-num">10</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">延</span>
+          <div class="poster-foot"><span class="poster-title">Gintama': Enchousen</span><span class="poster-sub">Ep 253–265 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama': Enchousen — Episodes 253–265</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 13 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Oct 2012 – Mar 2013</span></div>
+        <p class="synopsis">A short continuation season. While Gintoki was away, the Yorozuya got a new leader named Kintoki — and nothing is as it seems.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>A tight 13-episode season that bridges the gap between <em>Gintama'</em> and the 2013 movie.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e11">
+      <div class="visual">
+        <div class="poster" style="--c1:#1f4a6b;--c2:#0a1a26">
+          <span class="poster-num">11</span>
+          <span class="poster-format"><svg class="icon" style="color:#f4a261"><use href="#i-film"/></svg></span>
+          <span class="poster-kanji">未</span>
+          <div class="poster-foot"><span class="poster-title">Be Forever Yorozuya</span><span class="poster-sub">2013 &middot; Movie</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--movie"><svg class="icon"><use href="#i-film"/></svg> Movie</span></div>
+        <h3 class="entry-title">Gintama: The Movie — Be Forever Yorozuya</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 110 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Jul 6, 2013</span></div>
+        <p class="synopsis">An original, canon movie created as a "potential ending." A time-travel story where Gintoki must prevent a catastrophic future.</p>
+        <div class="note note--tip"><svg class="icon"><use href="#i-bulb"/></svg><p>Written as a possible conclusion to the series. Essential viewing — the emotional weight hits hard after 265 episodes.</p></div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════ PART 3 ═══════════ -->
+  <div class="part-head">
+    <span class="part-label">Part 3</span>
+    <h2 class="part-title">The Final Stretch</h2>
+    <p class="part-sub">2015 – 2021 &middot; Gintama°, the Slip Arc, Silver Soul, and the true ending</p>
+  </div>
+
+  <div class="roadmap">
+
+    <article class="entry" id="e12">
+      <div class="visual">
+        <div class="poster" style="--c1:#6b3a1f;--c2:#24120a">
+          <span class="poster-num">12</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">度</span>
+          <div class="poster-foot"><span class="poster-title">Gintama° (2015)</span><span class="poster-sub">Ep 266–295 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama° (2015) — Episodes 266–295</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 30 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Apr – Oct 2015</span></div>
+        <p class="synopsis">The fourth TV series begins. New animation quality, new arcs and the setup for the final saga.</p>
+        <div class="note note--warn"><svg class="icon"><use href="#i-alert"/></svg><p><strong>Stop after Episode 295.</strong> The <em>Futon</em> special was released mid-season and fits best here chronologically.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e13">
+      <div class="visual">
+        <div class="poster" style="--c1:#3a3a5c;--c2:#141420">
+          <span class="poster-num">13</span>
+          <span class="poster-format"><svg class="icon" style="color:#8fd99a"><use href="#i-star"/></svg></span>
+          <span class="poster-kanji">眠</span>
+          <div class="poster-foot"><span class="poster-title">Futon ni Haitte kara...</span><span class="poster-sub">2015 &middot; Special</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--special"><svg class="icon"><use href="#i-star"/></svg> Special</span></div>
+        <h3 class="entry-title">Futon ni Haitte kara... (Jump Festa 2014)</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 25 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Apr 3, 2015</span></div>
+        <p class="synopsis">Bundled with the 58th manga volume and previewed at Jump Festa 2014. The Yorozuya return after a two-year absence to announce the new season.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>A self-contained comedy episode. Watch it here to preserve the flow of <em>Gintama°</em>.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e14">
+      <div class="visual">
+        <div class="poster" style="--c1:#6b1f1f;--c2:#240a0a">
+          <span class="poster-num">14</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">戦</span>
+          <div class="poster-foot"><span class="poster-title">Gintama° (2015)</span><span class="poster-sub">Ep 296–316 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama° (2015) — Episodes 296–316</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 21 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Oct 2015 – Mar 2016</span></div>
+        <p class="synopsis">The conclusion of Gintama°. Major arcs, shocking reveals and the setup for the final war.</p>
+        <div class="note note--tip"><svg class="icon"><use href="#i-bulb"/></svg><p>Finish <em>Gintama°</em> here before moving on to the specials and the final arcs.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e15">
+      <div class="visual">
+        <div class="poster" style="--c1:#6b5a1f;--c2:#241e0a">
+          <span class="poster-num">15</span>
+          <span class="poster-format"><svg class="icon" style="color:#8fd99a"><use href="#i-star"/></svg></span>
+          <span class="poster-kanji">宴</span>
+          <div class="poster-foot"><span class="poster-title">Umai-mono wa Atomawashi ni...</span><span class="poster-sub">2015 &middot; Special</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--special"><svg class="icon"><use href="#i-star"/></svg> Special</span></div>
+        <h3 class="entry-title">Jump Festa 2015 Special</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 12 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Nov 3, 2015</span></div>
+        <p class="synopsis">A short comedy special screened at Jump Festa 2015. The cast gathers to preview the "biggest arc in anime history".</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>Pure meta-comedy. The cast breaks the fourth wall to discuss the upcoming arc.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e16">
+      <div class="visual">
+        <div class="poster" style="--c1:#8a2a5c;--c2:#2e0e1f">
+          <span class="poster-num">16</span>
+          <span class="poster-format"><svg class="icon" style="color:#a5b4fc"><use href="#i-disc"/></svg></span>
+          <span class="poster-kanji">恋</span>
+          <div class="poster-foot"><span class="poster-title">Aizome Kaori-hen</span><span class="poster-sub">2016 &middot; OVA</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--ova"><svg class="icon"><use href="#i-disc"/></svg> OVA</span></div>
+        <h3 class="entry-title">Gintama°: Aizome Kaori-hen (Love Potion Arc)</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 2 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Aug – Nov 2016</span></div>
+        <p class="synopsis">Yoshiwara is hit by a mysterious love-inducing incense. Tsukuyo falls under its spell, and the entire district descends into romantic chaos.</p>
+        <div class="note note--tip"><svg class="icon"><use href="#i-bulb"/></svg><p>Not broadcast on TV. Essential for Tsukuyo fans and anyone who enjoys Gintama's romantic-comedy side.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e17">
+      <div class="visual">
+        <div class="poster" style="--c1:#2a5a3a;--c2:#0e1f14">
+          <span class="poster-num">17</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">休</span>
+          <div class="poster-foot"><span class="poster-title">Gintama.: Slip Arc</span><span class="poster-sub">Ep 329–341 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama.: Slip Arc — Episodes 329–341</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 13 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Oct – Dec 2017</span></div>
+        <p class="synopsis">After the grim events of Rakuyo, the Yorozuya return to comedy. This arc adapts lighthearted side stories that were skipped in earlier seasons.</p>
+        <div class="note note--warn"><svg class="icon"><use href="#i-alert"/></svg><p><strong>Important:</strong> Watch the Slip Arc <em>before</em> <em>Gintama.</em> (Episodes 317–328). The arcs adapt manga chapters that take place before the Rakuyo battle.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e18">
+      <div class="visual">
+        <div class="poster" style="--c1:#5c1f4a;--c2:#1e0a18">
+          <span class="poster-num">18</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">洛</span>
+          <div class="poster-foot"><span class="poster-title">Gintama. (2017)</span><span class="poster-sub">Ep 317–328 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama. (2017) — Episodes 317–328</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 12 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Jan – Mar 2017</span></div>
+        <p class="synopsis">The Rakuyo Decisive Battle arc. A massive, emotional war storyline that brings together every major faction.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>Despite airing before the Slip Arc, this arc chronologically follows it. Watch it second for the best story flow.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e19">
+      <div class="visual">
+        <div class="poster" style="--c1:#1f1f4a;--c2:#0a0a1e">
+          <span class="poster-num">19</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">銀</span>
+          <div class="poster-foot"><span class="poster-title">Silver Soul Arc — Part 1</span><span class="poster-sub">Ep 342–353 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama.: Silver Soul Arc — Episodes 342–353</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 12 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Jan – Mar 2018</span></div>
+        <p class="synopsis">The first part of the final arc. Utsuro's master plan is in full effect, and Earth is taken over by the Altana Liberation Army.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>This is the first cour. Finish all 12 episodes before continuing to the Second Half War.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e20">
+      <div class="visual">
+        <div class="poster" style="--c1:#1f1f4a;--c2:#0a0a1e">
+          <span class="poster-num">20</span>
+          <span class="poster-format"><svg class="icon" style="color:#f28a8a"><use href="#i-tv"/></svg></span>
+          <span class="poster-kanji">魂</span>
+          <div class="poster-foot"><span class="poster-title">Silver Soul Arc — Part 2</span><span class="poster-sub">Ep 354–367 &middot; TV</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--tv"><svg class="icon"><use href="#i-tv"/></svg> TV Series</span></div>
+        <h3 class="entry-title">Gintama.: Silver Soul Arc — Second Half War (Episodes 354–367)</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 14 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Jul – Oct 2018</span></div>
+        <p class="synopsis">The conclusion of the Silver Soul Arc. The Yorozuya must unite every ally they've ever made for the final battle against Utsuro.</p>
+        <div class="note note--tip"><svg class="icon"><use href="#i-bulb"/></svg><p>The second cour of the final arc. Finish all 14 episodes before moving to <em>The Semi-Final</em>.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e21">
+      <div class="visual">
+        <div class="poster" style="--c1:#4a3a1f;--c2:#1a140a">
+          <span class="poster-num">21</span>
+          <span class="poster-format"><svg class="icon" style="color:#8fd99a"><use href="#i-star"/></svg></span>
+          <span class="poster-kanji">半</span>
+          <div class="poster-foot"><span class="poster-title">Gintama: The Semi-Final</span><span class="poster-sub">2021 &middot; Special</span></div>
+        </div>
+        <div class="connector"><span class="line"></span><svg class="chev"><use href="#i-arrow-down"/></svg></div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--special"><svg class="icon"><use href="#i-star"/></svg> Special</span></div>
+        <h3 class="entry-title">Gintama: The Semi-Final</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-list"/></svg> 2 episodes</span><span><svg class="icon"><use href="#i-calendar"/></svg> Jan 2021</span></div>
+        <p class="synopsis">As Edo rebuilds, Gintoki returns to find Shinpachi — who doesn't know he's back. A bridge special that sets the stage for the final movie.</p>
+        <div class="note note--info"><svg class="icon"><use href="#i-info"/></svg><p>Two episodes that directly lead into <em>Gintama: The Very Final</em>.</p></div>
+      </div>
+    </article>
+
+    <article class="entry" id="e22">
+      <div class="visual">
+        <div class="poster" style="--c1:#8a1f2e;--c2:#2e0a10">
+          <span class="poster-num">22</span>
+          <span class="poster-format"><svg class="icon" style="color:#f4a261"><use href="#i-film"/></svg></span>
+          <span class="poster-kanji">完</span>
+          <div class="poster-foot"><span class="poster-title">The Very Final</span><span class="poster-sub">2021 &middot; Movie</span></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="info-head"><span class="badge badge--movie"><svg class="icon"><use href="#i-film"/></svg> Movie</span></div>
+        <h3 class="entry-title">Gintama: The Very Final</h3>
+        <div class="meta"><span><svg class="icon"><use href="#i-clock"/></svg> 104 min</span><span><svg class="icon"><use href="#i-calendar"/></svg> Jan 8, 2021</span></div>
+        <p class="synopsis">The absolute conclusion. The final battle, the final jokes, and the final goodbye to the Yorozuya.</p>
+        <div class="note note--tip"><svg class="icon"><use href="#i-bulb"/></svg><p>The true ending to the anime story. Watch this after <em>The Semi-Final</em>.</p></div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════ SKIP & TIPS ═══════════ -->
+  <div class="info-section">
+    <h2><svg class="icon"><use href="#i-trash"/></svg> What to Skip (If You Want)</h2>
+    <div class="info-grid">
+      <div class="info-block">
+        <h3><svg class="icon"><use href="#i-skip"/></svg> Anime-Original Filler</h3>
+        <p class="ep-list">1–2, 50, 57, 75, 106, 114, 124, 125, 135, 137, 150, 155, 164, 166, 171, 173–174, 176, 185, 209, 252</p>
+        <p style="margin-top:0.6rem; font-size:0.74rem; color:var(--text-muted);">Only ~6% of Gintama is filler.</p>
+      </div>
+      <div class="info-block">
+        <h3><svg class="icon"><use href="#i-list"/></svg> Recap Episodes</h3>
+        <ul>
+          <li><strong>Episode 125</strong> — Yorozuya / Shinsengumi recap</li>
+          <li><strong>Episode 209</strong> — Meta recap episode</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h3><svg class="icon"><use href="#i-layers"/></svg> Mixed Episodes</h3>
+        <p>Episodes <strong>82, 111, 120</strong> mix canon and original content. They contain plot-relevant moments and are generally worth watching.</p>
+      </div>
+      <div class="info-block">
+        <h3><svg class="icon"><use href="#i-bulb"/></svg> Final Tip</h3>
+        <p>The first 20–30 episodes are largely character introductions. Push through to the <strong>Benizakura Arc</strong> where the serious plot kicks in.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="copy-bar">
+    <button class="copy-btn" id="copyBtn" onclick="copyOrder()">
+      <svg class="icon copy-icon"><use href="#i-copy"/></svg>
+      <svg class="icon check-icon"><use href="#i-check"/></svg>
+      <span id="copyLabel">Copy Watch Order</span>
+    </button>
+  </div>
+
+  <div class="footer">
+    <p>Gintama &copy; Hideaki Sorachi / Shueisha &middot; Sunrise &middot; Bandai Namco Pictures<br>Fan-made watch guide &middot; Posters via AniList CDN</p>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   HARDCODED POSTER URLS — extracted from AniList
+══════════════════════════════════════════════════════════════ */
+var POSTERS = {
+  e1:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx2951-rl0US7OuMXbA.jpg',
+  e2:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx918-iOaeBVUn4uK7.jpg',
+  e3:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx7472-RveDgQsIZUNG.jpg',
+  e4:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx918-iOaeBVUn4uK7.jpg',
+  e5:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6945.jpg',
+  e6:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx918-iOaeBVUn4uK7.jpg',
+  e7:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b10643-PhoV9rO51y4v.jpg',
+  e8:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9735.jpg',
+  e9:  'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx9969-0GaRABYVdUcH.png',
+  e10: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx15417-Uc2uNdWEixwi.jpg',
+  e11: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx15335-QjijwChGTBs0.png',
+  e12: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20996-kBEGEGdeK1r7.jpg',
+  e13: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20882-uSAlqEptx2ls.png',
+  e14: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20996-kBEGEGdeK1r7.jpg',
+  e15: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/21501-4fZ2GVRjYCYc.jpg',
+  e16: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21588-4stDE0RbC9jL.jpg',
+  e17: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx99714-0pCKHe4XYIz7.jpg',
+  e18: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97889-ytqHdmus9wQi.jpg',
+  e19: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx100784-7fWdiduBFr95.jpg',
+  e20: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101925-gcA84dgcSj2w.png',
+  e21: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx126819-KlcARzqDMjvf.jpg',
+  e22: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx114129-RLgSuh6YbeYx.jpg'
+};
+
+Object.keys(POSTERS).forEach(function (id) {
+  var entry = document.getElementById(id);
+  if (!entry) return;
+  var poster = entry.querySelector('.poster');
+  if (!poster) return;
+  var img = document.createElement('img');
+  img.className = 'poster-img';
+  img.alt = '';
+  img.referrerPolicy = 'no-referrer';
+  img.addEventListener('load', function () {
+    img.classList.add('loaded');
+    poster.classList.add('has-img');
+  });
+  img.addEventListener('error', function () {
+    console.warn('[Gintama] Failed to load poster for ' + id + ':', img.src);
+    img.remove();
+  });
+  img.src = POSTERS[id];
+  poster.insertBefore(img, poster.firstChild);
+});
+
+/* ══════════ COPY WATCH ORDER ══════════ */
+function copyOrder() {
+  var order = [
+    '1.  Jump Festa 2005 Special (2005)',
+    '2.  Gintama (2006) — Episodes 3–57  [skip 1–2]',
+    '3.  Movie: Gintama: The Movie — Benizakura Arc (2010)  [replaces Ep 58–61]',
+    '4.  Gintama (2006) — Episodes 62–124',
+    '5.  Special: Shiroyasha Koutan (2008)  [after Ep 124]',
+    '6.  Gintama (2006) — Episodes 125–201  [skip 125]',
+    '7.  Special: Dai Hanseikai (2010)  [after Ep 201]',
+    '8.  Special: Shinyaku Benizakura-hen (2010)',
+    "9.  Gintama' (2011) — Episodes 202–252  [skip 209]",
+    "10. Gintama': Enchousen (2012) — Episodes 253–265",
+    '11. Movie: Be Forever Yorozuya (2013)',
+    '12. Gintama° (2015) — Episodes 266–295',
+    '13. Special: Futon ni Haitte kara... (Jump Festa 2014)',
+    '14. Gintama° (2015) — Episodes 296–316',
+    '15. Special: Umai-mono wa Atomawashi ni Suru... (Jump Festa 2015)',
+    '16. OVA: Gintama°: Aizome Kaori-hen (2016) — 2 episodes',
+    '17. Gintama.: Slip Arc (2017) — Episodes 329–341',
+    '18. Gintama. (2017) — Episodes 317–328',
+    '19. Gintama.: Silver Soul Arc — Part 1 (2018) — Episodes 342–353',
+    '20. Gintama.: Silver Soul Arc — Part 2 (2018) — Episodes 354–367',
+    '21. Special: Gintama: The Semi-Final (2021) — 2 episodes',
+    '22. Movie: Gintama: The Very Final (2021)'
+  ].join('\n');
+
+  var btn = document.getElementById('copyBtn');
+  var label = document.getElementById('copyLabel');
+
+  function done() {
+    btn.classList.add('copied');
+    label.textContent = 'Copied!';
+    setTimeout(function () {
+      btn.classList.remove('copied');
+      label.textContent = 'Copy Watch Order';
+    }, 2200);
+  }
+
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = order;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(order).then(done).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+</script>
+
+</body>
+</html>
