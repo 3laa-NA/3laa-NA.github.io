@@ -32,18 +32,21 @@
 }
 
 *{box-sizing:border-box;}
-html{-webkit-text-size-adjust:100%;}
+html{-webkit-text-size-adjust:100%;background:var(--bg);}
+html,body{min-height:100%;}
 body{
   margin:0;
   background:
     radial-gradient(1200px 480px at 15% -10%, color-mix(in srgb, var(--accent-a) 14%, transparent), transparent 60%),
     radial-gradient(900px 420px at 100% 0%, color-mix(in srgb, var(--accent-b) 10%, transparent), transparent 55%),
     var(--bg);
+  background-attachment:fixed;
   color:var(--ink);
   font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   padding-inline:24px;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
+  min-height:100vh;
 }
 a{color:var(--accent-solid);text-decoration:none;}
 a:hover{text-decoration:underline;}
