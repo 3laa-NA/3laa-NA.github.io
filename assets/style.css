@@ -37,9 +37,11 @@ html,body{min-height:100%;}
 body{
   margin:0;
   background:
-    radial-gradient(1200px 480px at 15% -10%, color-mix(in srgb, var(--accent-a) 14%, transparent), transparent 60%),
-    radial-gradient(900px 420px at 100% 0%, color-mix(in srgb, var(--accent-b) 10%, transparent), transparent 55%),
+    radial-gradient(110vw 90vh at 12% 0%, color-mix(in srgb, var(--accent-a) 13%, transparent), transparent 65%),
+    radial-gradient(90vw 80vh at 100% 8%, color-mix(in srgb, var(--accent-b) 10%, transparent), transparent 62%),
+    radial-gradient(100vw 100vh at 20% 100%, color-mix(in srgb, var(--accent-a) 7%, transparent), transparent 70%),
     var(--bg);
+  background-repeat:no-repeat;
   background-attachment:fixed;
   color:var(--ink);
   font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
