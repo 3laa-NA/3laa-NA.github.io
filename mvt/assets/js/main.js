@@ -514,6 +514,7 @@
     const box = $(".contact-links");
     const links = [];
     if (c.email) links.push(`<a href="mailto:${esc(c.email)}">${icon("mail")}${esc(c.email)}</a>`);
+    if (c.phone) links.push(`<a href="tel:${esc(c.phone.replace(/[^+\d]/g, ""))}">${icon("phone")}${esc(c.phone)}</a>`);
     if (c.instagram) links.push(`<a href="${esc(c.instagram)}" target="_blank" rel="noopener">${icon("instagram")}Instagram</a>`);
     if (c.tiktok) links.push(`<a href="${esc(c.tiktok)}" target="_blank" rel="noopener">${icon("music")}TikTok</a>`);
     box.innerHTML = links.length ? links.join("") : "<p>Contact details are coming soon.</p>";

@@ -36,7 +36,7 @@ Copy this folder into the repository as a subfolder, for example `mvt/`. All pat
 
 All the editable content is in **`assets/js/data.js`**:
 
-- `contact`: add your email, Instagram and TikTok links. Empty values are hidden, and until you fill one in the footer says "Contact details are coming soon".
+- `contact`: add your email, phone number, Instagram and TikTok links. Empty values are hidden, and until you fill one in the footer says "Contact details are coming soon".
 - `talents`: names, taglines and monthly prices. `price: null` shows "Price soon" (used for Contemporary Dance, which has no price in the pricing file).
 - `packages`, `fees`, `budget`: the pricing figures.
 - `survey`: the numbers for each question and the quotes.

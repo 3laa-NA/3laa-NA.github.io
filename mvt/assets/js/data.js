@@ -3,7 +3,8 @@
 window.MVT_DATA = {
   // Fill these in to show your contact links in the footer. Empty values are hidden.
   contact: {
-    email: "",      // e.g. "hello@mvt.ma"
+    email: "linafilahi229@gmail.com",
+    phone: "+212 619-239822",
     instagram: "",  // e.g. "https://instagram.com/yourhandle"
     tiktok: "",     // e.g. "https://www.tiktok.com/@yourhandle"
   },
