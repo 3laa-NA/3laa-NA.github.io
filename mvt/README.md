@@ -6,7 +6,7 @@ A single-page static website for Moroccan Verve Talent. It is plain HTML, CSS an
 
 ## What's on the page
 
-- **Spray-paint hero**: visitors can spray the wall around the logo in the five logo colours (press and drag with a mouse, or tap on a phone). The wall gets one sprayed intro when the page opens.
+- **Spray-paint hero**: visitors can spray anywhere on the wall, over the logo and title too, in the five logo colours (press and drag with a mouse; on a phone, tap, swipe sideways, or hold and drag). The wall gets one sprayed intro when the page opens.
 - **The problem and About**: the opening question and the full introduction text.
 - **Logo explorer**: select the markers on the logo to read what each part means.
 - **Every talent is welcome**: the 19 talents from the MVT site, with taglines, filters and proposed monthly prices. "Add to plan" sends a talent to the plan builder.

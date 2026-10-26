@@ -179,20 +179,34 @@
 
     const local = (e) => { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
     const isUI = (e) => e.target.closest("a, button, .paint-tools");
+    // touch: a quick tap splats; holding still or swiping sideways starts spraying.
+    // Vertical swipes are left to the browser (touch-action: pan-y), which cancels the touch so the page scrolls.
+    let hold = 0;
+    const startSpray = () => {
+      clearTimeout(hold); hero._tap = null;
+      splat(pointer.x, pointer.y, color, 0.6);
+      spraying = true; dwell = { x: pointer.x, y: pointer.y, t: performance.now() };
+      loop();
+    };
     hero.addEventListener("pointerdown", (e) => {
       if (isUI(e) || e.button > 0) return;
       measure();
       pointer = local(e);
-      if (e.pointerType === "mouse") {
-        splat(pointer.x, pointer.y, color, 0.6);
-        spraying = true; dwell = { x: pointer.x, y: pointer.y, t: performance.now() };
-        loop();
-      } else {
+      if (e.pointerType === "mouse") startSpray();
+      else {
         hero._tap = { x: pointer.x, y: pointer.y, t: performance.now() };
+        hold = setTimeout(startSpray, 180);
       }
     });
-    hero.addEventListener("pointermove", (e) => { if (spraying) pointer = local(e); });
-    const stop = () => { spraying = false; };
+    hero.addEventListener("pointermove", (e) => {
+      if (spraying) { pointer = local(e); return; }
+      if (!hero._tap) return;
+      const p = local(e), dx = Math.abs(p.x - hero._tap.x), dy = Math.abs(p.y - hero._tap.y);
+      if (dx > 8 && dx > dy) startSpray();
+    });
+    // once spraying has started, keep the page still so the finger can move in any direction
+    hero.addEventListener("touchmove", (e) => { if (spraying) e.preventDefault(); }, { passive: false });
+    const stop = () => { clearTimeout(hold); spraying = false; };
     window.addEventListener("pointerup", (e) => {
       if (hero._tap && e.pointerType !== "mouse") {
         const p = local(e), tap = hero._tap; hero._tap = null;
