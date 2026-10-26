@@ -46,6 +46,7 @@ strong { font-weight: 800; }
 [data-icon] { display: inline-flex; }
 
 :focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; border-radius: 6px; }
+[hidden] { display: none !important; }
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .skip-link { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 700; }
 .skip-link:focus { top: 12px; }
@@ -123,16 +124,17 @@ strong { font-weight: 800; }
   background: #fff;
   touch-action: pan-y;
 }
-.wall { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
-.hero-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 900px; pointer-events: none; }
+/* the paint sits on top of the logo and text; only the buttons and paint tools stay above it */
+.wall { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.hero-inner { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 900px; pointer-events: none; }
 .hero-inner a, .hero-inner button { pointer-events: auto; }
 .hero-logo { width: clamp(180px, min(34vh, 64vw), 400px); height: auto; aspect-ratio: 1; }
 .hero-text { display: flex; flex-direction: column; align-items: center; margin-top: 8px; }
 .slogan { font-weight: 800; font-size: clamp(1.15rem, 2vw, 1.5rem); margin-top: 14px; }
 .hero .lede { margin-top: 12px; max-width: 46ch; color: var(--muted); }
-.hero .cta-row { justify-content: center; }
+.hero .cta-row { justify-content: center; position: relative; z-index: 3; }
 .paint-tools {
-  position: relative; z-index: 2; margin-top: 30px;
+  position: relative; z-index: 3; margin-top: 30px;
   display: flex; align-items: center; gap: 14px;
   padding: 8px 10px 8px 18px; border-radius: 999px; background: #fff; border: 1.5px solid var(--ink);
   white-space: nowrap;

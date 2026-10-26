@@ -66,7 +66,6 @@
     const canvas = $(".wall");
     const ctx = canvas.getContext("2d");
     const logo = $(".hero-logo");
-    const text = $(".hero-text");
     const tools = $(".paint-tools");
     const palette = ["pink", "yellow", "blue", "green", "red"];
     let color = "pink";
@@ -91,7 +90,7 @@
     function measure() {
       const hr = hero.getBoundingClientRect();
       const pad = (el, p) => { const r = el.getBoundingClientRect(); return { l: r.left - hr.left - p, t: r.top - hr.top - p, r: r.right - hr.left + p, b: r.bottom - hr.top + p }; };
-      rects = [pad(logo, 18), pad(text, 14), pad(tools, 10)];
+      rects = [pad(tools, 10)];
     }
     function resize() {
       const r = hero.getBoundingClientRect();
