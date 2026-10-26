@@ -179,42 +179,56 @@
 
     const local = (e) => { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
     const isUI = (e) => e.target.closest("a, button, .paint-tools");
-    // touch: a quick tap splats; holding still or swiping sideways starts spraying.
-    // Vertical swipes are left to the browser (touch-action: pan-y), which cancels the touch so the page scrolls.
-    let hold = 0;
+    // Mouse and pen use pointer events. Touch uses touch events, which every mobile browser delivers
+    // (some Android browsers never send touch pointer events here).
+    // Touch: a quick tap splats; holding still or swiping sideways starts spraying.
+    // Vertical swipes are left to the browser (touch-action: pan-y) so the page scrolls.
+    let hold = 0, tap = null;
     const startSpray = () => {
-      clearTimeout(hold); hero._tap = null;
+      clearTimeout(hold); tap = null;
       splat(pointer.x, pointer.y, color, 0.6);
       spraying = true; dwell = { x: pointer.x, y: pointer.y, t: performance.now() };
       loop();
     };
+    const stop = () => { clearTimeout(hold); tap = null; spraying = false; };
+
     hero.addEventListener("pointerdown", (e) => {
-      if (isUI(e) || e.button > 0) return;
+      if (e.pointerType === "touch" || isUI(e) || e.button > 0) return;
       measure();
       pointer = local(e);
-      if (e.pointerType === "mouse") startSpray();
-      else {
-        hero._tap = { x: pointer.x, y: pointer.y, t: performance.now() };
-        hold = setTimeout(startSpray, 180);
+      startSpray();
+    });
+    hero.addEventListener("pointermove", (e) => { if (spraying && e.pointerType !== "touch") pointer = local(e); });
+    window.addEventListener("pointerup", (e) => { if (e.pointerType !== "touch") stop(); });
+    window.addEventListener("pointercancel", (e) => { if (e.pointerType !== "touch") stop(); });
+
+    hero.addEventListener("touchstart", (e) => {
+      if (e.touches.length > 1 || isUI(e)) { stop(); return; }
+      measure();
+      pointer = local(e.touches[0]);
+      tap = { x: pointer.x, y: pointer.y, t: performance.now() };
+      hold = setTimeout(startSpray, 180);
+    }, { passive: true });
+    hero.addEventListener("touchmove", (e) => {
+      const p = local(e.touches[0]);
+      if (spraying) {
+        pointer = p;
+        if (e.cancelable) e.preventDefault(); // keep the page still while painting
+        return;
       }
-    });
-    hero.addEventListener("pointermove", (e) => {
-      if (spraying) { pointer = local(e); return; }
-      if (!hero._tap) return;
-      const p = local(e), dx = Math.abs(p.x - hero._tap.x), dy = Math.abs(p.y - hero._tap.y);
-      if (dx > 8 && dx > dy) startSpray();
-    });
-    // once spraying has started, keep the page still so the finger can move in any direction
-    hero.addEventListener("touchmove", (e) => { if (spraying) e.preventDefault(); }, { passive: false });
-    const stop = () => { clearTimeout(hold); spraying = false; };
-    window.addEventListener("pointerup", (e) => {
-      if (hero._tap && e.pointerType !== "mouse") {
-        const p = local(e), tap = hero._tap; hero._tap = null;
+      if (!tap) return;
+      const dx = Math.abs(p.x - tap.x), dy = Math.abs(p.y - tap.y);
+      if (dx > 8 && dx > dy) { pointer = p; startSpray(); if (e.cancelable) e.preventDefault(); }
+      else if (dy > 8) stop(); // a vertical swipe: let the page scroll
+    }, { passive: false });
+    hero.addEventListener("touchend", (e) => {
+      if (tap) {
+        const p = local(e.changedTouches[0]);
         if (Math.hypot(p.x - tap.x, p.y - tap.y) < 12 && performance.now() - tap.t < 500) splat(p.x, p.y, color, 1);
       }
       stop();
     });
-    window.addEventListener("pointercancel", () => { hero._tap = null; stop(); });
+    hero.addEventListener("touchcancel", stop);
     window.addEventListener("blur", stop);
 
     // opening moment: the wall gets sprayed once in the logo's colours
